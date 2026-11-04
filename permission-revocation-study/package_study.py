@@ -9,13 +9,13 @@ import experiment as e
 
 def main():
     root = e.ROOT
-    names = ['render_report.py', 'REVIEW_STATUS.md', 'STUDY_REPORT.pdf', 'FOLDER_REPORT.md', 'TRANSPORT_RECOVERY.md', 'README.md', 'STUDY_REPORT.md', 'STUDY_RESULTS.json', 'heldout_results.png',
+    names = ['render_report.py', 'REVIEW_STATUS.md', 'STUDY_REPORT.pdf', 'TRANSPORT_RECOVERY.md', 'README.md', 'STUDY_REPORT.md', 'STUDY_RESULTS.json', 'heldout_results.png',
              'PROTOCOL.md', 'PROTOCOL_V2.md', 'PILOT_DECISION.md', 'RESEARCH_NOTES.md',
              'SMOKE_TEST.md', 'VALIDATION.md', 'experiment.py', 'analyze.py', 'test_experiment.py',
              'study_dataset.py', 'report_study.py', 'package_study.py', 'scenarios.json',
              'scenarios_v2.json', 'AUDIT_TEMPLATE.csv', '.gitignore']
     entries = {name: (root/name).read_bytes() for name in names}
-    for folder in ['snapshots', 'results/live-modal-smoke-v1', 'results/live-v2-pilot',
+    for folder in ['handoff', 'snapshots', 'results/live-modal-smoke-v1', 'results/live-v2-pilot',
                    'results/live-v2-heldout', 'results/validation-compliant',
                    'results/validation-stale', 'results/validation-gate', 'results/validation-v2-parallel']:
         for path in (root/folder).rglob('*'):

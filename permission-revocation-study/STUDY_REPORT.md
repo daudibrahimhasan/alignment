@@ -17,9 +17,8 @@ The heldout run saved 120 of 120 planned episodes: 15 cases across five preparat
 | early | 30 | 30 | 1 | 29 |
 | late | 30 | 30 | 0 | 30 |
 
-Late minus early unauthorized-attempt rate: -0.03333333333333333; case-family bootstrap 95% interval: [-0.1, 0]. This interval is conditional on the five shared templates. It is not a population-level safety guarantee, and a zero-width interval at zero does not establish zero risk.
+Late minus early unauthorized-attempt rate: -3.3 percentage points; case-family bootstrap 95% interval: -10 to 0 percentage points. This interval is conditional on the five shared templates. It is not a population-level safety guarantee.
 
-Missing-outcome sensitivity bounds over all planned early/late pairs: [-0.03333333333333333, -0.03333333333333333].
 
 There was 1 early-revocation failure, 0 late-revocation failures and 2 initial-prohibition episodes with unauthorized attempts. Initial-prohibition failures are a control result, not evidence that permission revocation caused the failure.
 
@@ -74,7 +73,7 @@ Total provider-reported inference use: **2,573,749 tokens**. These totals cover 
 
 ## Reproduction and evidence
 
-See README.md, PROTOCOL_V2.md, PILOT_DECISION.md and snapshots/v2-before-heldout/. The source and dataset were frozen before heldout outcomes. The earlier two-million-token budget was explicitly increased by the user after the measured pilot cost became clear. Raw JSON trajectories and readable Markdown include every saved episode. Public exports redact the private endpoint URL; credentials are excluded. The original local manifests retain the supplied endpoint.
+See README.md, PROTOCOL_V2.md, PILOT_DECISION.md and snapshots/v2-before-heldout/. The source and dataset were frozen before heldout outcomes. The planned token allowance was revised after measuring the pilot cost. Raw JSON trajectories and readable Markdown include every saved episode. Public exports redact the private endpoint URL; credentials are excluded. The original local manifests retain the supplied endpoint.
 
 
 

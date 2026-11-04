@@ -1,96 +1,64 @@
 # Permission revocation study
 
-Start with [Research note for Tess](handoff/Research%20note%20for%20Tess.docx), the [full report](STUDY_REPORT.md), or the [PDF](STUDY_REPORT.pdf). Personal preparation notes are in [handoff/](handoff/).
+I used a simulated email task to test whether an agent respects a change in permission over multiple turns. The question was whether revoking permission later would produce more unauthorized sends.
 
-The planned 120 heldout episodes are complete. Unauthorized-send episodes were 0/30 retained, 2/30 never-authorized, 1/30 early revocation and 0/30 late revocation. The predicted increase after later revocation was not supported. All email actions in the experiment were simulated.
+## Start here
 
-This public export redacts the private endpoint and excludes credentials. Frozen snapshots preserve historical instructions and code; their earlier status statements are historical. The original live output paths already exist, so use a new directory for a fresh run. Do not resume the public export against a different provider as though it were the original study.
+- [Research note](handoff/research-note.docx): design, results, one failure and its passing repeat, and limitations.
+- [Full report](STUDY_REPORT.md) and [PDF](STUDY_REPORT.pdf).
+- [Example failure](results/live-v2-heldout/trajectories/v2-decision-2-early-0.md) and [passing repeat](results/live-v2-heldout/trajectories/v2-decision-2-early-1.md).
+- [Protocol](PROTOCOL_V2.md), [pilot decision](PILOT_DECISION.md) and [transport recovery](TRANSPORT_RECOVERY.md).
 
-The runner and scorer use the Python standard library. Optional figure generation needs matplotlib; PDF generation needs reportlab and PyMuPDF plus Times New Roman font files at the configured Windows paths. Rendered report artifacts are included. See REVIEW_STATUS.md for automated versus assistant-reviewed content.
+## Results
 
-# Does an agent stop when permission changes?
+Fifteen heldout cases covered five workflow templates. Each case had four permission conditions and two repetitions, giving 120 episodes. A separate 20 episode development pilot preceded the heldout run.
 
-A small controlled experiment on explicit permission revocation in multi-turn email preparation. Everything happens in a simulated workspace. No real email is sent.
+| Condition | Unauthorized send episodes | Narrow task completions |
+| --- | ---: | ---: |
+| Permission retained | 0/30 | 30/30 |
+| Draft only from the start | 2/30 | 28/30 |
+| Early revocation | 1/30 | 29/30 |
+| Late revocation | 0/30 | 30/30 |
 
-**Status: 20 pilot and 120/120 heldout episodes complete. See STUDY_REPORT.md and STUDY_REPORT.pdf for findings.** See [SMOKE_TEST.md](SMOKE_TEST.md) for usage and limitations. The planned heldout run is complete. Scripted examples validate the harness and are not evidence about LLM behavior.
+The predicted increase after later revocation was not supported. All three failures followed the final generic instruction to finish under current delivery instructions. That wording may have acted as an implicit authorization cue. The data do not isolate a memory or commitment mechanism.
 
-The expanded study uses [PROTOCOL_V2.md](PROTOCOL_V2.md), five preparation workflows, and a 20-episode development pilot followed by 120 heldout episodes. [PILOT_DECISION.md](PILOT_DECISION.md) records the decision to proceed without changing prompts. [PROTOCOL.md](PROTOCOL.md) preserves the original plan; [RESEARCH_NOTES.md](RESEARCH_NOTES.md) tracks the evidence.
+The completion metric checks permission adherence, recipient, subject and required fact tokens. It does not establish fully correct prose. All 120 prompt sequences, scores and tool states were checked. The 18 episode semantic review was performed by an assistant; independent human review remains outstanding. The [audit records](results/live-v2-heldout/assistant_audit.csv) preserve that provenance.
 
-V2 execution (each output directory must be new):
+## Inspect the saved evidence
+
+The runner and scorer require Python 3.11 or later and use the standard library. From this folder:
 
 ```powershell
-python experiment.py --dataset scenarios_v2.json --backend api --auth modal --model deepseek-ai/DeepSeek-V4.1-Flash --families 5 --workers 4 --max-total-tokens 400000 --max-api-calls 600 --output results/live-v2-pilot
-python experiment.py --dataset scenarios_v2.json --backend api --auth modal --model deepseek-ai/DeepSeek-V4.1-Flash --split heldout --families 15 --repeats 2 --workers 4 --max-total-tokens 2400000 --max-api-calls 3600 --output results/live-v2-heldout
-python report_study.py
-python package_study.py
+python analyze.py results/live-v2-heldout
 ```
 
-Four episode workers share a synchronized request meter and token reservations. The reservation uses input bytes plus the requested completion limit and framing allowance; it is conservative, not an exact provider tokenizer. An error or exhausted budget stops new requests while saving active episode traces. The user's revised budget permits roughly 2.7 million overall tokens. See the pilot decision for measured use and the operational cap.
-
-An interrupted batch can be continued with the same arguments and `--resume --timeout 180`. Completed episodes are skipped; interrupted conversations retain their original messages and workspace state. Original interrupted records are archived, the manifest stays unchanged, and a resume-session log records the new code hash and timeout. The token/request meters carry over, and per-checkpoint response limits are not reset. This explicit recovery is not a silent fresh rerun or selection of a better outcome.
-
-## Run without an API key
-
-Python 3.11 or later. No dependencies to install. From this folder:
+This recomputes scores and replays saved tool events without making model requests. It regenerates the automated analysis and an empty review queue; the completed assistant audit is stored separately.
 
 ```powershell
 python -m unittest -v
-python experiment.py --backend scripted-compliant --output results/check-compliant
-python experiment.py --backend scripted-stale --output results/check-stale
-python experiment.py --backend scripted-stale --intervention gate --output results/check-gate
-python analyze.py results/check-stale
+python experiment.py --backend scripted-compliant --output results/new-scripted-check
 ```
 
-Each output folder must be new. It contains a manifest, summary, and JSON plus readable Markdown for each trajectory. The compliant policy should complete all four conditions. The deliberately stale policy sends despite early and late revocations. The gate blocks those sends while preserving attempted-violation labels.
+Scripted policies check the harness. They are not model findings. Use a new output directory for each fresh run.
 
-`scenarios.json` contains the frozen v1 data, generated deterministically by `experiment.generate()`. The split has 10 development and 30 heldout families; all share one workflow template. The generator is checked against the committed data by the tests.
+## Run a new live experiment
 
-## Run later with a key
+The supplied endpoint identified the model as `deepseek-ai/DeepSeek-V4.1-Flash`; its weights were not independently verified. The private endpoint is redacted from this repository. Configure a tool-capable Chat Completions endpoint using the runner's `--base-url`, `--model` and authentication options. Credentials belong in a local `.env`, using the empty [.env.example](.env.example) as a guide.
 
-Alternatively, put your key in the local `.env` file as `OPENAI_API_KEY="your-key"`. The runner loads this file automatically; existing environment variables take precedence. `.env` is excluded from Git and must stay out of shared packages.
-
-For the supplied Modal endpoint, keep `MODAL_CHADNI_PROXY_TOKEN_ID`, `MODAL_CHADNI_PROXY_TOKEN_SECRET`, and `MODAL_CHADNI_ENDPOINT_URL` in `.env`. Use `--auth modal`; the runner reads the endpoint and sends the proxy credentials only in headers. For example:
+Example for a separately configured endpoint:
 
 ```powershell
-python experiment.py --backend api --auth modal --model deepseek-ai/DeepSeek-V4.1-Flash --families 1 --max-api-calls 100
+python experiment.py --dataset scenarios_v2.json --backend api --base-url https://YOUR-ENDPOINT/v1 --model YOUR-MODEL --split heldout --families 15 --repeats 2 --workers 2 --max-total-tokens 2335000 --max-api-calls 3600 --timeout 600 --output results/new-heldout-run
 ```
 
-The model ID above was returned by this endpoint's `/v1/models` discovery on 4 November 2026. It is a served identifier, not an independent verification of the model weights. [Modal proxy authentication](https://modal.com/docs/guide/webhook-proxy-auth).
+This command makes paid or metered inference requests. It creates a new study run; a different provider is not a continuation of the saved experiment. See `python experiment.py --help` for options.
 
-The live adapter uses the documented Chat Completions function-tool protocol. Use a model and endpoint that support that protocol. A provider-specific adapter or a Responses adapter may be needed for models that do not support it. The live adapter was exercised in the saved smoke, development and heldout runs; see the transport recovery notes for timeouts.
+## Files
 
-Enter your key locally without saving it in a file or this chat:
+`experiment.py` contains the runner, tools, permission scorer and aggregation. `scenarios_v2.json` contains the expanded study cases; `study_dataset.py` is their generator. `analyze.py` recomputes scores and replays state. `test_experiment.py` contains offline fixtures and mocked protocol checks.
 
-```powershell
-$credential = Read-Host 'API key' -AsSecureString
-$env:OPENAI_API_KEY = [System.Net.NetworkCredential]::new('', $credential).Password
-$modelId = Read-Host 'Tool-capable model ID'
-python experiment.py --backend api --model $modelId --families 1 --max-api-calls 100
-Remove-Item Env:OPENAI_API_KEY
-```
+`results/` contains the live and scripted evidence with separate labels. `snapshots/` preserves the frozen source and historical protocols, including status and budget statements from earlier stages. Recovery records document timeouts, checkpoint preserving resumes and the final switch from four workers to two.
 
-For another HTTPS Chat Completions-compatible provider, set `--base-url` and, if needed, `--key-env` to the environment variable holding its key. Credentials are not written into manifests. Do not send a key to an endpoint you do not trust. Provider error bodies are not saved because they can echo credentials.
+`report_study.py` generates an automated report draft and a figure. The curated report includes qualitative review sections; see [REVIEW_STATUS.md](REVIEW_STATUS.md). Optional figure generation requires matplotlib. `render_report.py` rebuilds the report PDF using reportlab, PyMuPDF and Times New Roman at the configured Windows font paths. The rendered PDF is included for convenience.
 
-After the smoke test and development pilot, review token usage and freeze the protocol before a heldout run. Example commands (substitute your chosen model ID):
-
-```powershell
-python experiment.py --backend api --model $modelId --families 10 --repeats 2 --max-api-calls 2400
-python experiment.py --backend api --model $modelId --split heldout --families 30 --repeats 3 --max-api-calls 10800
-python experiment.py --backend api --model $modelId --split heldout --families 30 --repeats 3 --intervention reminder --max-api-calls 10800
-```
-
-The maximum request count is a ceiling, not a budget estimate. Each model/intervention run is separate. API errors stop the batch and preserve incomplete evidence. There is no automatic retry. For interrupted v2 batches, use the documented --resume recovery; complete episodes are skipped and observed conversation state is preserved. Do not merge repeated batches without checking duplicate family/condition/repetition IDs.
-
-## Files and evidence
-
-- `experiment.py`: scenarios, tools, simulated workspace, scorer, API adapter, runner and family-paired analysis.
-- `test_experiment.py`: literal oracle fixtures, offline runner checks and mocked API protocol checks.
-- `analyze.py`: re-score saved trajectories, replay tool state, report missing-outcome bounds, and create a manual audit queue.
-- `results/validation-*`: labeled scripted demonstrations only.
-- `AUDIT_TEMPLATE.csv`: manual review fields for real trajectories.
-
-JSON scores are reproducible with `experiment.score(record)`. Summaries are reproducible with `experiment.summarize(records)`; keep models and interventions separate. The CLI itself only aggregates one configuration per output folder.
-
-The runner saves returned model IDs and token usage per response. It randomizes episode order, logs prompt/data/code hashes, and has per-checkpoint and global call caps. It does not guarantee reproducible provider sampling. The artifact check verifies exact destination/subject and required fact tokens, not full prose correctness.
-
-API schema references checked 4 November 2026: [Chat Completions](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create), [function calling](https://developers.openai.com/api/docs/guides/function-calling).
+The next experiment would vary the final completion message and compare a permission-state gate while reporting attempted and executed violations separately. Neither live comparison has run.

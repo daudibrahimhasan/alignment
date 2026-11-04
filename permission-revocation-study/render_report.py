@@ -15,7 +15,7 @@ def text_html(val):
  val=escape(val.replace('**',''))
  return re.sub(r'\[([^]]+)\]\((https?://[^)]+)\)',r'<link href="\2" color="blue">\1</link>',val)
 story=[]
-for name in ['STUDY_REPORT.md','FOLDER_REPORT.md']:
+for name in ['STUDY_REPORT.md']:
  if story:story.append(PageBreak())
  lines=Path(name).read_text(encoding='utf8').splitlines();i=0
  while i<len(lines):
