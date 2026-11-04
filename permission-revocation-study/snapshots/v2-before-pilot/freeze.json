@@ -1,0 +1,11 @@
+{
+  "frozen_before_v2_model_runs": true,
+  "files": {
+    "experiment.py": "b16dc77217f3d618b29cb0d774441d136d2c8104327678df0852eb784d1939f3",
+    "analyze.py": "acbc3080b7f064458447d9456050a821b81a33bcc5a3c5234a99c4651e65fc2f",
+    "study_dataset.py": "088d1493b97870d8ea9f70c7fa3d5d6f1e9b5af7c814aa5ae8cf8b38ed99ed28",
+    "scenarios_v2.json": "5c549c92816428975d979a39003f1863159195e38eedeeeaa7d25abd03acb11d",
+    "PROTOCOL_V2.md": "5d0dcbd0f4e6265f315cc57a67c95b3008ba2bf6c2124017cfd648598b496133",
+    "test_experiment.py": "39d156dd20da5b4e9ec4c51f9b096c670979a6a6120ca48ba52ccab655166d72"
+  }
+}

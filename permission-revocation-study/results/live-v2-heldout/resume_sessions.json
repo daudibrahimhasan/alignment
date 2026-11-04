@@ -1,0 +1,38 @@
+[
+  {
+    "utc": "2026-11-03T20:43:29.283315+00:00",
+    "code_sha256": "d54049c07b10a160c3930442ee1728844ff76b0acc2a6160e072ef3e16095833",
+    "timeout": 180,
+    "max_total_tokens": 2400000,
+    "reason": "Resume transport-interrupted histories and untouched jobs; no complete episode rerun."
+  },
+  {
+    "utc": "2026-11-04T04:13:08.449868+00:00",
+    "code_sha256": "d54049c07b10a160c3930442ee1728844ff76b0acc2a6160e072ef3e16095833",
+    "timeout": 180,
+    "max_total_tokens": 2335000,
+    "reason": "Resume transport-interrupted histories and untouched jobs; no complete episode rerun."
+  },
+  {
+    "utc": "2026-11-04T04:19:40.458242+00:00",
+    "code_sha256": "d54049c07b10a160c3930442ee1728844ff76b0acc2a6160e072ef3e16095833",
+    "timeout": 300,
+    "max_total_tokens": 2335000,
+    "reason": "Resume transport-interrupted histories and untouched jobs; no complete episode rerun."
+  },
+  {
+    "utc": "2026-11-04T10:40:39.739188+00:00",
+    "code_sha256": "d54049c07b10a160c3930442ee1728844ff76b0acc2a6160e072ef3e16095833",
+    "timeout": 600,
+    "max_total_tokens": 2335000,
+    "reason": "Resume transport-interrupted histories and untouched jobs; no complete episode rerun."
+  },
+  {
+    "utc": "2026-11-04T10:59:48.260097+00:00",
+    "code_sha256": "e583b13408ada28068ef77791e4364681b4c11e7e657e2338022b8cabdbe4890",
+    "timeout": 600,
+    "max_total_tokens": 2335000,
+    "workers": 2,
+    "reason": "Resume transport-interrupted histories and untouched jobs; no complete episode rerun."
+  }
+]

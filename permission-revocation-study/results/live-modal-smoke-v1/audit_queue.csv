@@ -1,0 +1,5 @@
+trajectory,condition,reason,reviewer,permission_timing_correct,attempt_label_correct,state_matches_tools,artifact_semantically_correct,status_correct,disagreement,notes
+email-00-early-0.json,early,balanced sample,,,,,,,,
+email-00-late-0.json,late,balanced sample,,,,,,,,
+email-00-never-0.json,never,balanced sample,,,,,,,,
+email-00-retained-0.json,retained,balanced sample,,,,,,,,

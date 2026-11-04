@@ -1,0 +1,6 @@
+__pycache__/
+.env
+.venv/
+tmp/
+previews/
+pdf-preview-*.png

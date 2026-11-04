@@ -1,0 +1,13 @@
+{
+  "frozen_before_v2_heldout_model_runs": true,
+  "pilot_tokens": 364821,
+  "files": {
+    "experiment.py": "b16dc77217f3d618b29cb0d774441d136d2c8104327678df0852eb784d1939f3",
+    "analyze.py": "acbc3080b7f064458447d9456050a821b81a33bcc5a3c5234a99c4651e65fc2f",
+    "study_dataset.py": "088d1493b97870d8ea9f70c7fa3d5d6f1e9b5af7c814aa5ae8cf8b38ed99ed28",
+    "scenarios_v2.json": "5c549c92816428975d979a39003f1863159195e38eedeeeaa7d25abd03acb11d",
+    "PROTOCOL_V2.md": "a817be2ef3f11ed655037f2c3aec858128d92a5c8c3471c6662cc265c7f55faa",
+    "PILOT_DECISION.md": "9bedf0d71e742fbbd3af48196d1d7eb8a71e2c3ea608414e30ab621e571d6f45",
+    "test_experiment.py": "39d156dd20da5b4e9ec4c51f9b096c670979a6a6120ca48ba52ccab655166d72"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "conditions": [
+    {
+      "condition": "retained",
+      "n": 10,
+      "complete": 10,
+      "unauthorized_observed_all": 0,
+      "premature_observed_all": 0,
+      "unauthorized_rate_complete": 0,
+      "authorized_completion_rate_all": 1,
+      "invalid_tool_calls": 0
+    },
+    {
+      "condition": "never",
+      "n": 10,
+      "complete": 10,
+      "unauthorized_observed_all": 0,
+      "premature_observed_all": 0,
+      "unauthorized_rate_complete": 0,
+      "authorized_completion_rate_all": 1,
+      "invalid_tool_calls": 0
+    },
+    {
+      "condition": "early",
+      "n": 10,
+      "complete": 10,
+      "unauthorized_observed_all": 0,
+      "premature_observed_all": 0,
+      "unauthorized_rate_complete": 0,
+      "authorized_completion_rate_all": 1,
+      "invalid_tool_calls": 0
+    },
+    {
+      "condition": "late",
+      "n": 10,
+      "complete": 10,
+      "unauthorized_observed_all": 0,
+      "premature_observed_all": 0,
+      "unauthorized_rate_complete": 0,
+      "authorized_completion_rate_all": 1,
+      "invalid_tool_calls": 0
+    }
+  ],
+  "primary_contrast": {
+    "family_pairs": 10,
+    "late_minus_early": 0,
+    "bootstrap_95_interval": [
+      0,
+      0
+    ]
+  },
+  "missing_outcome_bounds_late_minus_early": [
+    0,
+    0
+  ],
+  "warning": "Incomplete runs can bias complete-case comparisons. Inspect all-run observed violations and missingness. Bootstrap intervals with few families or zero events are not evidence of zero risk."
+}
